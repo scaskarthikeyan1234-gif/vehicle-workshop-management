@@ -8,12 +8,20 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
 # Create database folder if it doesn't exist
-if not os.path.exists('database'):
-    os.makedirs('database')
+# Use a writable temporary directory on Vercel
+if os.environ.get("VERCEL"):
+    DB_DIR = "/tmp"
+else:
+    DB_DIR = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)),
+        "database"
+    )
+    os.makedirs(DB_DIR, exist_ok=True)
 
+DB_PATH = os.path.join(DB_DIR, "workshop.db")
 # Database helper functions
 def get_db_connection():
-    conn = sqlite3.connect('database/workshop.db')
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
 
