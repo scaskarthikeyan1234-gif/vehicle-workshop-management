@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Connection</title>
+</head>
+<body>
+    <h1>Testing Backend Connection</h1>
+    <button onclick="testConnection()">Test Connection</button>
+    <div id="result"></div>
+
+    <script>
+        async function testConnection() {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/api/services');
+                const data = await response.json();
+                document.getElementById('result').innerHTML = 
+                    '<h3 style="color:green">✅ Connected Successfully!</h3>' +
+                    '<p>Found ' + data.length + ' services</p>';
+            } catch (error) {
+                document.getElementById('result').innerHTML = 
+                    '<h3 style="color:red">❌ Connection Failed!</h3>' +
+                    '<p>Error: ' + error.message + '</p>';
+            }
+        }
+    </script>
+</body>
+</html>
